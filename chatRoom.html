@@ -31,6 +31,18 @@
                 width: 100%;
                 box-sizing: border-box;
             }
+            .dir{
+                display: flex;
+                gap: calc(0.5vh + 0.5vw);
+                align-items: center;
+            }
+            .dir:hover .hide{
+                display: block !important;
+            }
+            .hide{
+                cursor: pointer;
+                display: none;
+            }
         </style>
     </head>
 
@@ -39,7 +51,7 @@
            
         </div>
         <div class="inp-container">
-            <input class="enter-msg-inp" id="inp" placeholder="Enter Your Message" title="press enter to send !" >
+            <input class="enter-msg-inp" id="inp" placeholder="Enter Your Message" title="press enter to send !"  >
         </div>
         <script src="Load.js"></script>
         <script>
@@ -82,8 +94,8 @@
 
             function generateAllMsg(){
                 cnt.innerHTML = "";
-                for(let key of msgArr){
-                    cnt.insertAdjacentHTML("beforeend",`<div>${key}</div>`);
+                for(let i = 0 ; i < msgArr.length ; i++){
+                    cnt.insertAdjacentHTML("beforeend",`<div class="dir" id="c${i}">${msgArr[i]} <button class="hide" id="b${i}" onclick="deleteMsg(${i})" >Delete Msg</button></div>`);
                 }
             }
             async function addMessage(msg){
@@ -102,7 +114,8 @@
                 }
                 let tm = hr + ":" + min + " " + m ;
                 let res = userName + " : " + msg + " // " + tm ;
-                cnt.insertAdjacentHTML("beforeend",`<div>${res}</div>`);
+                let i = msgArr.length ;
+                cnt.insertAdjacentHTML("beforeend",`<div class="dir" id="c${i}">${res} <button class="hide" id="b${i}" onclick="deleteMsg(${i})" >Delete Msg</button></div>`);
                 msgArr.push(res);
                 lastMsgId++;
                 try{
@@ -110,6 +123,14 @@
             }
                 catch(err){console.log(err)}
 
+            }
+            async function deleteMsg(id){
+                let el = document.getElementById("b"+id);
+                let el2 = document.getElementById("c"+id);
+                if(el){
+                    el2.remove();
+                    await Load("delete Message",{id : String(id)});
+                }
             }
 
         </script>

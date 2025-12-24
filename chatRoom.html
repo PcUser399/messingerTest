@@ -53,23 +53,21 @@
 
             async function Loading(){
                 try{
-                res = JSON.parse(await Load("get All Msgs and last Id"));
+                res = JSON.parse(await Load("get All Msgs"));
                 msgArr = res.msg ;
-                lastMsgId = res.LId ;
                 generateAllMsg();
                 }
                 catch(err){console.log(err)}
-                setInterval(tick , 1000);
+                setInterval(tick , 2500);
                 
 
             }
 
             async function tick(){
                 try{
-                res = JSON.parse(await Load("get All Msgs and last Id"));
+                res = JSON.parse(await Load("get All Msgs"));
                 msgArr = res.msg ;
-                lastMsgId = res.LId ;
-                newMsgs();
+                generateAllMsg();
                 }
                 catch(err){console.log(err)}
             }
@@ -82,14 +80,8 @@
 
 
 
-
-            
-            function newMsgs(){
-                for(let i = lastMsgId ; i < msgArr.length ; i++){
-                    cnt.insertAdjacentHTML("beforeend",`<div>${msgArr[i]}</div>`);
-                }
-            }
             function generateAllMsg(){
+                cnt.innerHTML = "";
                 for(let key of msgArr){
                     cnt.insertAdjacentHTML("beforeend",`<div>${key}</div>`);
                 }
@@ -114,7 +106,8 @@
                 msgArr.push(res);
                 lastMsgId++;
                 try{
-                await Load("add New Message",res);}
+                await Load("add New Message",{Message : res});
+            }
                 catch(err){console.log(err)}
 
             }

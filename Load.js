@@ -1,4 +1,4 @@
-async function Load(CMD,info="10",obj={}){
+async function Load(CMD,obj={}){
         const response = await fetch('https://nonextensively-monodomous-juana.ngrok-free.dev/submit',
           {
             method : 'POST',

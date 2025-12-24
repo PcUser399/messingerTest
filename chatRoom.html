@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                max-height: 100vh;
+                overflow: hidden;
+                margin: 0px;
+                padding: calc(2vh + 2vw);
+                position: relative;
+            }
+            .msp-cont{
+                height: 82.5vh;
+                font-size: calc(1vh + 1vw);
+                overflow-y:scroll ;
+                border: 1px solid gray;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+            .inp-container{
+                margin-top: 3.5vh;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .enter-msg-inp{
+                border-radius: 100px;
+                font-size: calc(1vh + 1vw);
+                padding: 1vh 2vw;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="msp-cont" id="ct">
+           
+        </div>
+        <div class="inp-container">
+            <input class="enter-msg-inp" id="inp" placeholder="Enter Your Message" title="press enter to send !" >
+        </div>
+        <script src="Load.js"></script>
+        <script>
+            let userName = localStorage.getItem("userName");
+            let cnt = document.getElementById("ct");
+            let inp = document.getElementById("inp");
+            let msgArr ;
+            let lastMsgId ;
+
+            Loading();
+
+            async function Loading(){
+                try{
+                res = JSON.parse(await Load("get All Msgs and last Id"));
+                msgArr = res.msg ;
+                lastMsgId = res.LId ;
+                generateAllMsg();
+                }
+                catch(err){console.log(err)}
+                setInterval(tick , 1000);
+                
+
+            }
+
+            async function tick(){
+                try{
+                res = JSON.parse(await Load("get All Msgs and last Id"));
+                msgArr = res.msg ;
+                lastMsgId = res.LId ;
+                newMsgs();
+                }
+                catch(err){console.log(err)}
+            }
+
+            
+            
+            inp.addEventListener("keypress",(event)=>{
+                if(event.key=='Enter') {addMessage(inp.value);inp.value=''}
+            })
+
+
+
+
+            
+            function newMsgs(){
+                for(let i = lastMsgId ; i < msgArr.length ; i++){
+                    cnt.insertAdjacentHTML("beforeend",`<div>${msgArr[i]}</div>`);
+                }
+            }
+            function generateAllMsg(){
+                for(let key of msgArr){
+                    cnt.insertAdjacentHTML("beforeend",`<div>${key}</div>`);
+                }
+            }
+            async function addMessage(msg){
+                if(!msg){
+                    return ;
+                }
+                let min = new Date().getMinutes();
+                let hr = new Date().getHours();
+                let m ;
+                if(hr>13){
+                    hr = hr-12;
+                    m = "PM";
+                }
+                else{
+                    m = "AM"
+                }
+                let tm = hr + ":" + min + " " + m ;
+                let res = userName + " : " + msg + " // " + tm ;
+                cnt.insertAdjacentHTML("beforeend",`<div>${res}</div>`);
+                msgArr.push(res);
+                lastMsgId++;
+                try{
+                await Load("add New Message",res);}
+                catch(err){console.log(err)}
+
+            }
+
+        </script>
+    </body>
+</html>

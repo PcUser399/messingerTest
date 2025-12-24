@@ -1,113 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>baki</title>
-        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
         <style>
-            img{
-                height: 8.5vh;
-                min-height: 56px;
-                width: auto;
-                cursor: pointer;
-                transition: 0.25s;
-                filter: drop-shadow(0 0 8px rgba(255, 51, 204,1));
-            }
-            img:hover{
-                scale: 1.1;
-                transition: 0.25s;
-                filter: drop-shadow(0 0 8px rgba(255, 51, 204))  drop-shadow(0 0 12px rgba(255, 51, 204));
-            }
             body{
-                padding-top: max(calc(8.5vh + 16px), 72px);
-                color: rgb(230, 115, 191);
-                height: calc(100vh - max(calc(8.5vh + 16px), 72px));
-                margin: 0px;         
-                background: linear-gradient(90deg,rgb(20, 10, 44), rgb(11, 11, 41),rgb(20, 10, 44));
-            }
-            header{
-                display: flex;
-                justify-content: space-between;
-                padding: 7px 5vw;
-                background-color: rgb(23, 0, 46);
-                box-shadow: 0px 2px 5px rgba(224, 14, 179, 0.45);
-                position: fixed;
-                top: 0px;
-                right: 0px;
-                left: 0px;
-            }
-            #left-side{
-                text-align: center;
-                display: flex;
-                align-items: center;
-                font-size: 30px;
-                font-family:'Pacifico', cursive;
-                padding-bottom: 3px;
-                text-shadow:  0 0 8px #FF33CC, 0 0 16px #FF33CC;
-                transition: 0.25s;
-                cursor: pointer;
-            }
-            #left-side:active,
-            #left-side:hover{
-                scale: 1.2;
-                transition: 0.25s;
-                text-shadow:  0 0 8px #FF33CC, 0 0 16px #FF33CC, 0 0 24px #FF33CC;
-            }
-            #str-ct{
-                height: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                height: 100vh;
+                gap: calc(0.5vh + 0.5vw);
             }
-            #str-bt{
-                height: 16vh;
-                width: 30vw;
-                margin-bottom: 5vh;
-                border-radius: 550px;
-                border: none;
-                font-family:'Audiowide';
-                font-weight: 700;
-                background-color: rgb(74, 8, 71);
-                color: white;
-                font-size:min(70px,calc(3vw + 2.75vh),10vh);
-                text-align: center;
-                letter-spacing: 1px;
-                box-shadow: 0 0 8px rgb(74, 8, 71);
-                animation: glow 1s ease alternate infinite ;
-                cursor: pointer;
-                transition: 0.5s;
+            input{
+                width: calc(17.5vw + 17.5vh);
+                font-size: calc(1vh + 1vw);
             }
-            #str-bt:hover{
-                transition: 0.5s;
-                color: rgb(128, 43, 226);
-                /* animation-play-state: paused; */
-                text-shadow: 0 0 8px blueviolet , 0 0 16px blueviolet;
-                scale: 1.25;
+            button{
+               cursor: pointer;
             }
-            @keyframes glow{
-                to {box-shadow:0 0 8px  #FF33CC, 0 0 16px #FF33CC, 0 0 24px #FF33CC , 0 0 32px rgba(255, 51, 204,0.5) , 0 0 64px rgba(255, 51, 204,0.5), 0 0 128px rgba(255, 51, 204,0.75);
-                    ;
-                }
-            }
+            
+
         </style>
+
     </head>
 
     <body>
+        <div style="display: flex;gap: calc(0.5vh + 0.5vw);">
+            <input placeholder="Please Enter Your User Name" id="inp">
+            <button onclick="submit()">Submit</button>
+        </div>
 
-        <header>
-            <img src="light baki logo.png">
-            <div></div>
-            <div id="left-side">
-                <a title="click here for bac national exams" onclick="window.location.hre=''">Exams</a>
-
-            </div>
-        </header>
-
-
-        <div id="str-ct"><button id="str-bt" onclick="window.location.href='option.html'">Start</button></div>
-
-
-        <script></script>
+        <script>
+            let logedIn = localStorage.getItem("userName");
+            if(logedIn){
+                window.location.href = "chatRoom.html";
+            }
+            let i = document.getElementById("inp");
+            function submit(){
+                if(i.value){
+                    localStorage.setItem("userName" , i.value);
+                    window.location.href = "chatRoom.html";
+                }
+                else{
+                    alert("userName Obligatory !");
+                }
+            }
+        </script>
     </body>
-
 </html>
